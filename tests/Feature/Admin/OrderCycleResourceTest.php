@@ -198,6 +198,7 @@ class OrderCycleResourceTest extends TestCase
     #[Test]
     public function order_cycle_form_accepts_valid_four_digit_year_dates(): void
     {
+        $this->travelTo(CarbonImmutable::create(2026, 6, 1, 10, 0, 0, config('lunch.business_timezone')));
         $this->actingAsAdmin();
 
         Livewire::test(CreateOrderCycle::class)
