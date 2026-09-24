@@ -63,12 +63,12 @@ These accounts exist **only in the new local demo database**; never use these cr
 ## Tests
 
 ```bash
-php -d memory_limit=512M artisan test
+php artisan test
 npm test
 npm run build
 ```
 
-The PHP suite currently has a date-dependent test that expects a June 2026 ordering cycle to remain open; it fails when run after that cycle's deadline. This does not block the verified local demo flow. JavaScript tests and the Vite build were checked with the commands above.
+PHPUnit's config grants its isolated Filament test processes a 512 MB memory limit. The local demo, PHP and JavaScript tests, and the Vite build were checked with the commands above.
 
 ## Architecture
 
