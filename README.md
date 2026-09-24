@@ -1,105 +1,79 @@
 # Nethammereda
 
-Corporate food ordering platform for weekly meal cycles, menu catalog, cart, Telegram login/WebApp, admin operations, supplier export, and personal fridge/history.
+Corporate meal ordering for weekly cycles: a Vue catalog and cart for employees, a Laravel API, and a Filament dashboard for administrators. Orders can be tracked through delivery, exported for suppliers, and viewed in a personal fridge/history. Telegram login and WebApp support are optional integrations.
 
-## Problem Solved
-- Employees need a simple flow to order meals by weekly cycle.
-- Admins need cycle management, menu import, supplier export, and order tracking.
-- Food stock and personal fridge history need post-delivery tracking.
-- Supplier side needs clean CSV/XLSX export for operations.
+Сервис корпоративных обедов: сотрудники выбирают блюда на неделю, а администратор управляет циклами заказов, меню и выгрузками для поставщика. После доставки блюда отображаются в личном холодильнике.
 
-## Key Features
-### Customer
-- Menu catalog with categories and images.
-- Cart and order flow.
-- Computed cycle states: `open`, `upcoming`, `closed`.
-- Telegram auth and Telegram WebApp support.
-- User profile and order history.
-- Personal fridge tracking.
+## Screenshots / Скриншоты
 
-### Admin
-- Filament admin panel.
-- Weekly cycle management.
-- Order management.
-- Supplier exports in CSV/XLSX.
-- Menu categories and menu items management.
-- Menu import workflow.
-- Fridge item management.
-- User management.
+All images below were captured from a fresh **local demo database** with fictional users; they are not mockups or production data.
 
-### Backend
-- Laravel API for web and Telegram clients.
-- Order lifecycle logic.
-- Menu import/sync pipeline.
-- Supplier export services.
-- Timezone-aware business cycle handling.
-- Automated tests.
+| Catalog / Каталог | Submitted order / Заказ |
+| --- | --- |
+| ![Menu catalog with dish categories and cart](screenshots/catalog.png) | ![Demo user and submitted order](screenshots/order.png) |
 
-## Tech Stack
-- Laravel 13
-- PHP 8.3
-- Vue 3
-- Vite
-- Tailwind CSS
-- Filament
-- MySQL or SQLite (local)
-- Telegram Bot/WebApp
-- Nginx + PHP-FPM + systemd queue on VPS
+![Administrator dashboard for the current weekly cycle](screenshots/admin.png)
 
-## Screenshots
-`screenshots/`
+## Stack
 
-Screenshots can be added later.
+Laravel 13 · PHP 8.3+ · Vue 3 · Vite · Tailwind CSS · Filament 5 · SQLite (local) / MySQL (deployment). Tests: PHPUnit, Vitest.
 
-## Architecture
-- Vue customer frontend.
-- Laravel API/backend.
-- Filament admin panel.
-- Queue/service workers for async tasks.
-- Supplier export module (CSV/XLSX).
-- Telegram Bot + WebApp integration layer.
+## Run locally / Локальный запуск
 
-## Local Setup
+Requires PHP 8.3+ with SQLite, [Composer](https://getcomposer.org/), Node.js and npm. The commands below were checked on macOS with PHP 8.5 and Node.js 22. Use a **fresh clone and a new SQLite file**: `demo:reset` deletes existing demo menu, orders, cycles and fridge data. Do not run it against a database you want to keep.
+
 ```bash
-cp .env.example .env
+git clone https://github.com/hattwell/nethammereda.git
+cd nethammereda
 composer install
-npm install
-php artisan key:generate
-php artisan migrate
-npm run build
-php artisan serve
+npm ci
+cp .env.example .env
 ```
 
-SQLite quick setup:
+In `.env`, keep `APP_ENV=local` and `DB_CONNECTION=sqlite`, set `APP_DEBUG=false`, and set `DB_DATABASE` to the **absolute path** of this clone's new `database/database.sqlite`. Leave Telegram credentials blank for the local demo. Then, from the repository root:
+
 ```bash
 touch database/database.sqlite
+php artisan key:generate
+php artisan migrate --force
+php artisan demo:reset --force
 ```
 
-PowerShell alternative:
-```powershell
-New-Item -ItemType File database/database.sqlite -Force
-```
+**Check the database path in `.env` before running the last command.** `demo:reset` is destructive and intended only for a throwaway local demo. The default `db:seed` does not load the demo.
 
-## Testing
+Start the app and Vite in separate terminals (both on loopback):
+
 ```bash
-php artisan test
+php artisan serve --host=127.0.0.1 --port=8000
+```
+
+```bash
+npm run dev -- --host 127.0.0.1 --port 5173
+```
+
+Open <http://127.0.0.1:8000/> for the catalog or <http://127.0.0.1:8000/admin/login> for the dashboard. Demo-only logins created by `demo:reset`:
+
+| Role | Email | Password |
+| --- | --- | --- |
+| Employee | `user@lunch.local` | `password` |
+| Admin | `admin@lunch.local` | `password` |
+
+These accounts exist **only in the new local demo database**; never use these credentials on a deployed instance. The demo employee already has a submitted order, so the cart shows that order instead of an empty checkout.
+
+## Tests
+
+```bash
+php -d memory_limit=512M artisan test
 npm test
 npm run build
-composer audit
 ```
 
-## Deployment Note
-- Production deploy is VPS-based.
-- `.env` and secrets are not committed.
-- Queue workers run via `systemd`.
-- Production credentials are never stored in the repository.
+The PHP suite currently has a date-dependent test that expects a June 2026 ordering cycle to remain open; it fails when run after that cycle's deadline. This does not block the verified local demo flow. JavaScript tests and the Vite build were checked with the commands above.
 
-## Security
-- No secrets in git history or staged files.
-- Runtime secrets are managed through `.env`.
-- For CI/CD secrets, use GitHub Actions repository secrets.
+## Architecture
 
-## Author
-Ivan / noctxbt
+- Laravel API manages cycles, orders, fridge state, menu imports, and CSV/XLSX supplier exports.
+- Vue provides the employee catalog and ordering UI; Filament provides the admin dashboard.
+- Telegram Bot / WebApp integration is optional and needs separate credentials. It is not required for the local demo.
 
-Full-stack developer focused on Laravel, Vue, product UX, Telegram integrations, admin systems, and production deployment.
+**Author:** Ivan · [hattwell](https://github.com/hattwell)
