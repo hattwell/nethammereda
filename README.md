@@ -63,12 +63,12 @@ These accounts exist **only in the new local demo database**; never use these cr
 ## Tests
 
 ```bash
+npm run build
 php artisan test
 npm test
-npm run build
 ```
 
-PHPUnit's config grants its isolated Filament test processes a 512 MB memory limit. The local demo, PHP and JavaScript tests, and the Vite build were checked with the commands above.
+Build before running PHP tests if the Vite dev server is not running: Filament views need the generated asset manifest. PHPUnit's config grants its isolated Filament test processes a 512 MB memory limit. The local demo, PHP and JavaScript tests, and the Vite build were checked with the commands above.
 
 ## Architecture
 
