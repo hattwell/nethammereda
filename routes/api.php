@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\TelegramLoginController;
 use App\Http\Controllers\Api\TelegramLinkController;
 use App\Http\Controllers\TelegramWebhookController;
 use App\Http\Middleware\BlockHostedDemoAuth;
+use App\Http\Middleware\BlockHostedDemoViewerApi;
 use App\Http\Middleware\ThrottleHostedDemoOrders;
 use App\Http\Middleware\VerifyTelegramWebhookSecret;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ Route::get('/current-cycle', CurrentCycleController::class);
 Route::get('/menu/categories', [MenuController::class, 'categories']);
 Route::get('/menu/items', [MenuController::class, 'items']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', BlockHostedDemoViewerApi::class])->group(function () {
     Route::get('/me', function (Request $request) {
         return response()->json([
             'data' => $request->user(),

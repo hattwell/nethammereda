@@ -19,6 +19,10 @@ class ListMenuItems extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        if (! MenuItemResource::canCreate()) {
+            return [];
+        }
+
         return [
             CreateAction::make()
                 ->label('Добавить блюдо'),

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MenuItems;
 
+use App\Filament\Resources\Concerns\ForbidsHostedDemoViewerWrites;
 use App\Filament\Resources\MenuItems\Pages\CreateMenuItem;
 use App\Filament\Resources\MenuItems\Pages\EditMenuItem;
 use App\Filament\Resources\MenuItems\Pages\ListMenuItems;
@@ -16,6 +17,8 @@ use Filament\Tables\Table;
 
 class MenuItemResource extends Resource
 {
+    use ForbidsHostedDemoViewerWrites;
+
     protected static ?string $model = MenuItem::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
