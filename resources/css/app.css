@@ -539,6 +539,17 @@
         grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 1rem;
     }
+
+    .menu-card [data-testid='menu-item-image-column'],
+    .menu-card [data-testid='menu-item-copy-column'] {
+        width: min(100%, 220px);
+    }
+
+    .menu-card [data-testid='menu-item-image-area'] {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+    }
 }
 
 @media (min-width: 1680px) {

@@ -88,7 +88,7 @@ const plusButtonLabel = computed(() => (props.orderItem
         class="menu-card min-w-0 gap-0 overflow-hidden rounded-[1.15rem] border border-transparent bg-white py-0 text-slate-900 shadow-none ring-0 transition-[background-color] duration-150 max-[430px]:overflow-visible max-[430px]:rounded-none max-[430px]:border-transparent max-[430px]:bg-transparent max-[430px]:shadow-none max-[430px]:transition-none"
     >
         <CardContent class="flex h-full min-w-0 flex-col p-0">
-            <div class="relative mx-auto w-[176px] max-w-full pt-1.5 max-[430px]:w-full max-[430px]:pt-0">
+            <div data-testid="menu-item-image-column" class="relative mx-auto w-[176px] max-w-full pt-1.5 max-[430px]:w-full max-[430px]:pt-0">
                 <div
                     data-testid="menu-item-image-area"
                     class="relative size-[176px] max-w-full overflow-hidden rounded-[1rem] bg-white max-[430px]:size-auto max-[430px]:aspect-square max-[430px]:h-auto max-[430px]:w-full max-[430px]:rounded-2xl"

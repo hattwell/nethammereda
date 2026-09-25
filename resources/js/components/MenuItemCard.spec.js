@@ -91,6 +91,14 @@ describe('MenuItemCard UI', () => {
         expect(image.attributes('height')).toBe('900');
     });
 
+    it('marks the image column for responsive desktop sizing', () => {
+        const wrapper = mountCard({ item: { ...baseItem, image_url: '/images/menu/dish-071.png' } });
+
+        expect(wrapper.find('[data-testid="menu-item-image-column"]').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="menu-item-image-area"] img').attributes('src'))
+            .toBe('/images/menu/dish-071.png');
+    });
+
     it('prioritizes only the first likely LCP image', () => {
         const priority = mountCard({
             item: {
