@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MenuImports;
 
+use App\Filament\Resources\Concerns\HidesFromHostedDemoViewer;
 use App\Filament\Resources\MenuImports\Pages\ListMenuImports;
 use App\Filament\Resources\MenuImports\Pages\ViewMenuImport;
 use App\Filament\Resources\MenuImports\Schemas\MenuImportInfolist;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class MenuImportResource extends Resource
 {
+    use HidesFromHostedDemoViewer;
+
     protected static ?string $model = MenuImport::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArrowUpTray;

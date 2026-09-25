@@ -670,6 +670,8 @@ const loadData = async () => {
     }
 };
 
+const isHostedDemo = window.__NETHAMMEREDA_DEMO__ === true;
+
 const ensureAuth = async () => {
     if (auth.token) {
         try {
@@ -678,6 +680,16 @@ const ensureAuth = async () => {
         } catch {
             resetProtectedState();
             auth.clearAuth();
+        }
+    }
+
+    if (isHostedDemo) {
+        try {
+            await auth.authWithDemo();
+            return true;
+        } catch (e) {
+            ui.error = `Демо временно недоступно: ${e.message}`;
+            return false;
         }
     }
 
@@ -1117,7 +1129,7 @@ onMounted(async () => {
     window.Telegram?.WebApp?.ready();
     window.Telegram?.WebApp?.expand();
 
-    const telegramCallbackResult = await hydrateAuthFromTelegramCallback();
+    const telegramCallbackResult = isHostedDemo ? '' : await hydrateAuthFromTelegramCallback();
     const telegramCallbackError = ui.error;
 
     await ensureAuth();
@@ -1139,6 +1151,10 @@ onBeforeUnmount(() => {
 
 <template>
     <div class="customer-app min-h-dvh overflow-x-clip bg-[#f2f2f2] text-slate-900">
+        <p v-if="isHostedDemo" role="status" class="bg-amber-100 px-4 py-2 text-center text-sm text-amber-950">
+            Демо: только вымышленные данные. Не вводите личную информацию. Заказы исчезают при перезапуске.
+            <a href="/demo/admin" class="ml-2 font-semibold underline underline-offset-2">Посмотреть админку</a>
+        </p>
         <AppHeader
             :loading="loading"
             :is-authenticated="isAuthenticated"

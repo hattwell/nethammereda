@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\UserRole;
 use App\Filament\Widgets\CurrentOrderCycleWidget;
 use App\Filament\Widgets\FridgeOverviewStats;
 use App\Filament\Widgets\RecentAdminActivityWidget;
@@ -31,6 +32,11 @@ class Dashboard extends BaseDashboard
 
     public function getWidgets(): array
     {
+        // Other widgets aggregate visitor orders and expose personal details.
+        if (config('lunch.hosted_demo') && auth('web')->user()?->role === UserRole::DemoViewer) {
+            return [CurrentOrderCycleWidget::class];
+        }
+
         return [
             CurrentOrderCycleWidget::class,
             SupplierStatusWidget::class,

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\OrderCycles;
 
+use App\Filament\Resources\Concerns\HidesFromHostedDemoViewer;
 use App\Filament\Resources\OrderCycles\Pages\CreateOrderCycle;
 use App\Filament\Resources\OrderCycles\Pages\EditOrderCycle;
 use App\Filament\Resources\OrderCycles\Pages\ListOrderCycles;
@@ -16,6 +17,8 @@ use Filament\Tables\Table;
 
 class OrderCycleResource extends Resource
 {
+    use HidesFromHostedDemoViewer;
+
     protected static ?string $model = OrderCycle::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCalendarDays;

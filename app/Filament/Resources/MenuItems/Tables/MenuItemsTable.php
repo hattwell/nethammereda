@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MenuItems\Tables;
 
+use App\Enums\UserRole;
 use App\Models\MenuItem;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\BulkActionGroup;
@@ -144,7 +145,7 @@ class MenuItemsTable
                         default => $query,
                     }),
             ])
-            ->recordActions([
+            ->recordActions(config('lunch.hosted_demo') && auth('web')->user()?->role === UserRole::DemoViewer ? [] : [
                 EditAction::make()
                     ->label('Открыть')
                     ->icon('heroicon-o-arrow-top-right-on-square'),
@@ -156,7 +157,7 @@ class MenuItemsTable
                     ->icon('heroicon-m-ellipsis-vertical')
                     ->color('gray'),
             ])
-            ->toolbarActions([
+            ->toolbarActions(config('lunch.hosted_demo') && auth('web')->user()?->role === UserRole::DemoViewer ? [] : [
                 BulkActionGroup::make([
                     DeleteBulkAction::make()
                         ->label('Удалить выбранное'),

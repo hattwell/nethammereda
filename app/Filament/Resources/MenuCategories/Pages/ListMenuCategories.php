@@ -19,6 +19,10 @@ class ListMenuCategories extends ListRecords
 
     protected function getHeaderActions(): array
     {
+        if (! MenuCategoryResource::canCreate()) {
+            return [];
+        }
+
         return [
             CreateAction::make()
                 ->label('Создать категорию'),

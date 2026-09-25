@@ -59,7 +59,10 @@ class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->is_active && $this->role === UserRole::Admin;
+        return $this->is_active && (
+            $this->role === UserRole::Admin
+            || (config('lunch.hosted_demo') && $this->role === UserRole::DemoViewer)
+        );
     }
 
     public function isAdmin(): bool

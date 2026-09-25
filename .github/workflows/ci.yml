@@ -52,3 +52,30 @@ jobs:
 
       - name: Composer audit
         run: composer audit
+
+  demo-container:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build hosted demo image
+        run: docker build -t nethammereda-demo:ci .
+      - name: Smoke-test disposable hosted demo
+        env:
+          APP_KEY: base64:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+        run: |
+          set -eu
+          docker run -d --name nethammereda-demo-ci \
+            -p 127.0.0.1:10000:10000 \
+            -e APP_ENV=production -e APP_DEBUG=false -e HOSTED_DEMO=true \
+            -e DB_CONNECTION=sqlite -e DB_DATABASE=/var/www/html/storage/demo.sqlite \
+            -e CACHE_STORE=file -e SESSION_DRIVER=file -e APP_KEY="$APP_KEY" \
+            nethammereda-demo:ci
+          trap 'docker logs nethammereda-demo-ci | tail -60; docker rm -f nethammereda-demo-ci' EXIT
+          ready=0
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:10000/up >/dev/null; then ready=1; break; fi
+            sleep 2
+          done
+          test "$ready" -eq 1
+          curl --fail --silent http://127.0.0.1:10000/api/menu/items | python3 -c 'import json,sys; assert len(json.load(sys.stdin)["data"]) > 0'
+          curl --fail --silent -X POST http://127.0.0.1:10000/api/auth/demo-session | python3 -c 'import json,sys; assert json.load(sys.stdin)["data"]["user"]["role"] == "user"'

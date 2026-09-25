@@ -1,4 +1,6 @@
-# Production Deploy Checklist (nethammereda.ru)
+# Historical Production Deploy Checklist (retired nethammereda.ru)
+
+**Archived reference only. The domain and VPS are no longer available. Do not run these commands for the public portfolio demo.** See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for the isolated Render Free deployment.
 
 Use this checklist after uploading code to `/var/www/nethammereda/app`.
 

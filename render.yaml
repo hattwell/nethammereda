@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: nethammereda-demo
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /up
+    envVars:
+      - key: APP_NAME
+        value: Nethammereda Demo
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: 'false'
+      - key: APP_KEY
+        sync: false
+      - key: HOSTED_DEMO
+        value: 'true'
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: DB_DATABASE
+        value: /var/www/html/storage/demo.sqlite
+      - key: CACHE_STORE
+        value: file
+      - key: SESSION_DRIVER
+        value: file
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: MAIL_MAILER
+        value: array
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: DEMO_RESET_ALLOWED
+        value: 'false'

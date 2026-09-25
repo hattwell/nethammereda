@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\FridgeItems;
 
+use App\Filament\Resources\Concerns\HidesFromHostedDemoViewer;
 use App\Filament\Resources\FridgeItems\Pages\CreateFridgeItem;
 use App\Filament\Resources\FridgeItems\Pages\EditFridgeItem;
 use App\Filament\Resources\FridgeItems\Pages\ListFridgeItems;
@@ -16,6 +17,8 @@ use Filament\Tables\Table;
 
 class FridgeItemResource extends Resource
 {
+    use HidesFromHostedDemoViewer;
+
     protected static ?string $model = FridgeItem::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedArchiveBox;

@@ -43,6 +43,14 @@
         @endif
 
         <div class="nh-admin-dashboard-card__footer nh-admin-action-strip" aria-label="Основные действия по текущему циклу">
+            @if ($isDemoViewer)
+                <x-filament::button tag="a" :href="$menuItemsUrl" color="primary" icon="heroicon-m-list-bullet">
+                    Посмотреть меню
+                </x-filament::button>
+                <x-filament::button tag="a" :href="$menuCategoriesUrl" color="gray" outlined>
+                    Категории блюд
+                </x-filament::button>
+            @else
             <x-filament::button tag="a" :href="$primaryActionUrl" :color="$primaryActionColor" :icon="$primaryActionIcon">
                 {{ $primaryActionLabel }}
             </x-filament::button>
@@ -65,6 +73,7 @@
                 <x-filament::button tag="a" :href="$supplierExportsUrl" color="gray" outlined icon="heroicon-m-document-arrow-down">
                     История отправок
                 </x-filament::button>
+            @endif
             @endif
         </div>
     </section>

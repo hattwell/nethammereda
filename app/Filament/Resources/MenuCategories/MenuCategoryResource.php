@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\MenuCategories;
 
+use App\Filament\Resources\Concerns\ForbidsHostedDemoViewerWrites;
 use App\Filament\Resources\MenuCategories\Pages\CreateMenuCategory;
 use App\Filament\Resources\MenuCategories\Pages\EditMenuCategory;
 use App\Filament\Resources\MenuCategories\Pages\ListMenuCategories;
@@ -16,6 +17,8 @@ use Filament\Tables\Table;
 
 class MenuCategoryResource extends Resource
 {
+    use ForbidsHostedDemoViewerWrites;
+
     protected static ?string $model = MenuCategory::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSquares2x2;
