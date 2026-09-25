@@ -2,7 +2,7 @@ FROM php:8.4-fpm-bookworm AS backend
 ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
     nginx gettext-base unzip libicu-dev libonig-dev libzip-dev \
-    libpng-dev libjpeg62-turbo-dev libfreetype6-dev libxml2-dev \
+    libpng-dev libjpeg62-turbo-dev libfreetype6-dev libxml2-dev libsqlite3-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j2 bcmath gd intl mbstring pdo_sqlite zip opcache \
     && rm -rf /var/lib/apt/lists/* /etc/nginx/sites-enabled/default \
