@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Middleware\RestrictHostedDemoViewer;
+use App\Http\Middleware\UseHostedDemoBearerAuth;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Trust reverse-proxy headers (X-Forwarded-Proto, etc.) so assets/URLs
         // keep HTTPS scheme when app is opened through a public tunnel.
         $middleware->trustProxies(at: '*');
+        $middleware->prepend(UseHostedDemoBearerAuth::class);
         $middleware->appendToGroup('web', RestrictHostedDemoViewer::class);
 
         // API routes must return 401 for guests instead of redirecting to a

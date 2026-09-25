@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SupplierOrderExports;
 
+use App\Filament\Resources\Concerns\HidesFromHostedDemoViewer;
 use App\Filament\Resources\SupplierOrderExports\Pages\ListSupplierOrderExports;
 use App\Filament\Resources\SupplierOrderExports\Pages\ViewSupplierOrderExport;
 use App\Filament\Resources\SupplierOrderExports\Schemas\SupplierOrderExportInfolist;
@@ -17,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class SupplierOrderExportResource extends Resource
 {
+    use HidesFromHostedDemoViewer;
+
     protected static ?string $model = SupplierOrderExport::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPaperAirplane;

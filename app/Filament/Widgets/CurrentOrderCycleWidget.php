@@ -3,6 +3,9 @@
 namespace App\Filament\Widgets;
 
 use App\Enums\OrderCycleStatus;
+use App\Enums\UserRole;
+use App\Filament\Resources\MenuCategories\MenuCategoryResource;
+use App\Filament\Resources\MenuItems\MenuItemResource;
 use App\Filament\Resources\FridgeItems\FridgeItemResource;
 use App\Filament\Resources\OrderCycles\OrderCycleResource;
 use App\Filament\Resources\Orders\OrderResource;
@@ -31,6 +34,9 @@ class CurrentOrderCycleWidget extends Widget
         $primaryAction = $this->primaryAction($cycle);
 
         return [
+            'isDemoViewer' => config('lunch.hosted_demo') && auth('web')->user()?->role === UserRole::DemoViewer,
+            'menuItemsUrl' => MenuItemResource::getUrl('index'),
+            'menuCategoriesUrl' => MenuCategoryResource::getUrl('index'),
             'cycle' => $cycle,
             'period' => AdminDashboard::cyclePeriod($cycle),
             'deadline' => AdminDashboard::formatDateTime($cycle?->closes_at),

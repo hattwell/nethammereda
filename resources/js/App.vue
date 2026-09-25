@@ -1153,6 +1153,7 @@ onBeforeUnmount(() => {
     <div class="customer-app min-h-dvh overflow-x-clip bg-[#f2f2f2] text-slate-900">
         <p v-if="isHostedDemo" role="status" class="bg-amber-100 px-4 py-2 text-center text-sm text-amber-950">
             Демо: только вымышленные данные. Не вводите личную информацию. Заказы исчезают при перезапуске.
+            <a href="/demo/admin" class="ml-2 font-semibold underline underline-offset-2">Посмотреть админку</a>
         </p>
         <AppHeader
             :loading="loading"

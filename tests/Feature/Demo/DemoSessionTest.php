@@ -8,6 +8,7 @@ use App\Enums\UserRole;
 use App\Models\Order;
 use App\Models\OrderCycle;
 use App\Models\User;
+use Database\Seeders\DemoHostedSeeder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -41,6 +42,30 @@ class DemoSessionTest extends TestCase
         Auth::forgetGuards();
         $this->withToken($second['token'])->getJson('/api/me')
             ->assertOk()->assertJsonPath('data.id', $second['user']['id']);
+    }
+
+    public function test_two_visitors_can_order_fictional_food_without_sharing_cart(): void
+    {
+        config([
+            'lunch.hosted_demo' => true,
+            'lunch.hosted_demo_bootstrap_authorized' => true,
+        ]);
+        $this->seed(DemoHostedSeeder::class);
+
+        $first = $this->postJson('/api/auth/demo-session')->assertCreated()->json('data');
+        $second = $this->postJson('/api/auth/demo-session')->assertCreated()->json('data');
+        $dish = \App\Models\MenuItem::query()->firstOrFail();
+
+        $this->withToken($first['token'])->postJson('/api/my-order/items', [
+            'menu_item_id' => $dish->id,
+            'quantity' => 1,
+        ])->assertOk();
+        $this->withToken($first['token'])->postJson('/api/my-order/submit')
+            ->assertOk()->assertJsonPath('data.status', OrderStatus::Submitted->value);
+        $this->withToken($first['token'])->getJson('/api/my-order')
+            ->assertOk()->assertJsonPath('data.order.user_id', $first['user']['id']);
+        $this->withToken($second['token'])->getJson('/api/my-order')
+            ->assertOk()->assertJsonPath('data.order', null);
     }
 
     public function test_demo_visitor_cannot_repeat_another_visitors_order(): void

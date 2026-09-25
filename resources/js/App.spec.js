@@ -532,6 +532,7 @@ describe('catalog auth UX', () => {
         expect(requestCount(fetchMock, '/auth/demo-session', 'POST')).toBe(1);
         expect(localStorage.getItem('lunch_mvp_token')).toBe('demo-visitor-token');
         expect(document.body.textContent).toContain('Не вводите личную информацию');
+        expect(document.querySelector('a[href="/demo/admin"]')).toBeTruthy();
     });
 
     it('reuses a valid demo session instead of creating another account', async () => {

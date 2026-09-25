@@ -35,7 +35,10 @@ class DemoViewerTest extends TestCase
         $this->get('/demo/admin')->assertRedirect('/admin');
         $this->assertAuthenticatedAs($viewer, 'web');
         $this->get('/admin')->assertOk()->assertSee('Панель управления')
-            ->assertDontSee('visitor-secret@example.invalid');
+            ->assertDontSee('visitor-secret@example.invalid')
+            ->assertDontSee('/admin/users')
+            ->assertDontSee('/admin/menu-imports')
+            ->assertDontSee('/admin/orders');
         $this->get('/admin/menu-items')->assertOk()->assertDontSee('Добавить блюдо');
         $this->get('/admin/menu-categories')->assertOk();
         foreach (['/admin/users', '/admin/orders', '/admin/order-cycles', '/admin/menu-items/create', '/admin/menu-items/1/edit'] as $uri) {
@@ -43,7 +46,7 @@ class DemoViewerTest extends TestCase
         }
         self::assertSame(403, $this->post(route('default-livewire.update'), [])->status(), 'Livewire update');
         self::assertSame(405, $this->post('/admin/menu-items')->status(), '/admin/menu-items has no POST route');
-        $this->patchJson('/api/me/profile', ['full_name' => 'Mutated viewer'])->assertForbidden();
+        $this->patchJson('/api/me/profile', ['full_name' => 'Mutated viewer'])->assertUnauthorized();
         $this->assertDatabaseMissing('users', [
             'id' => $viewer->id,
             'full_name' => 'Mutated viewer',
@@ -60,12 +63,29 @@ class DemoViewerTest extends TestCase
         User::factory()->create(['email' => 'private-visitor@example.invalid']);
 
         $this->get('/demo/admin')->assertRedirect('/admin');
+        $this->get('/admin')->assertOk()->assertSee('Посмотреть меню')
+            ->assertDontSee('/admin/order-cycles/1/edit');
         $this->get('/admin/menu-items')
             ->assertOk()
             ->assertSee('Суп овощной')
             ->assertDontSee('private-visitor@example.invalid')
             ->assertDontSee('Добавить блюдо')
             ->assertDontSee('/admin/menu-items/1/edit');
+    }
+
+    public function test_visitor_bearer_token_still_works_after_opening_viewer_in_same_browser(): void
+    {
+        config(['lunch.hosted_demo' => true]);
+        User::factory()->create([
+            'role' => UserRole::DemoViewer,
+            'is_active' => true,
+        ]);
+        $visitor = $this->postJson('/api/auth/demo-session')->assertCreated()->json('data');
+        $this->get('/demo/admin')->assertRedirect('/admin');
+
+        $this->getJson('/api/me')->assertUnauthorized();
+        $this->withToken($visitor['token'])->getJson('/api/me')
+            ->assertOk()->assertJsonPath('data.id', $visitor['user']['id']);
     }
 
     public function test_guest_and_normal_visitor_cannot_open_admin(): void

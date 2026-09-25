@@ -16,7 +16,13 @@ All images below were captured from a fresh **local demo database** with fiction
 
 ## Stack
 
-Laravel 13 · PHP 8.3+ · Vue 3 · Vite · Tailwind CSS · Filament 5 · SQLite (local) / MySQL (deployment). Tests: PHPUnit, Vitest.
+Laravel 13 · PHP 8.3+ · Vue 3 · Vite · Tailwind CSS · Filament 5 · SQLite (local/hosted demo) / MySQL (other deployments). Tests: PHPUnit, Vitest.
+
+## Interactive hosted demo / Интерактивное демо
+
+A free Render deployment is being prepared. **There is no public URL yet.** The real Vue catalog and Laravel order API will accept disposable test orders in isolated visitor accounts; `/demo/admin` will open a restricted Filament viewer with only synthetic menu lists and a weekly-cycle overview. Admin changes, exports, and visitor data are inaccessible to that viewer. The hosted demo resets when the free instance sleeps/restarts; cold starts can take about a minute. Do not enter real personal information. No payment or Telegram integration is enabled. See [deployment instructions](docs/DEPLOYMENT.md).
+
+Готовится бесплатное демо на Render; **публичной ссылки пока нет**. Можно будет оформлять тестовые заказы, а админку смотреть без права изменений. Данные временные и вымышленные; после простоя сервис может запускаться около минуты. Не вводите персональные данные.
 
 ## Run locally / Локальный запуск
 
