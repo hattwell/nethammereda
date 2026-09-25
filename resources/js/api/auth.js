@@ -1,6 +1,7 @@
 import { apiRequest } from './http';
 
 export const fetchMe = (token) => apiRequest('/me', { token });
+export const createDemoSession = () => apiRequest('/auth/demo-session', { method: 'POST' });
 export const updateMyProfile = ({ full_name }, token) => apiRequest('/me/profile', {
     method: 'PATCH',
     token,

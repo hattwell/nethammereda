@@ -25,4 +25,5 @@ afterEach(() => {
     localStorage.clear();
     sessionStorage.clear();
     delete window.Telegram;
+    delete window.__NETHAMMEREDA_DEMO__;
 });

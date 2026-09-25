@@ -200,6 +200,11 @@ const createFetchMock = ({
             return jsonResponse({ data: telegramLoginConfig });
         }
 
+        if (path === '/auth/demo-session' && method === 'POST') {
+            isAuthenticated = true;
+            return jsonResponse({ data: { token: 'demo-visitor-token', user: currentUser } }, 201);
+        }
+
         if (path === '/me') {
             return isAuthenticated
                 ? jsonResponse({ data: currentUser })
@@ -520,6 +525,30 @@ const installTelegramLoginMock = (result) => {
 };
 
 describe('catalog auth UX', () => {
+    it('provisions a private demo account and shows temporary-data notice when demo is enabled', async () => {
+        window.__NETHAMMEREDA_DEMO__ = true;
+        const { fetchMock } = await mountApp();
+
+        expect(requestCount(fetchMock, '/auth/demo-session', 'POST')).toBe(1);
+        expect(localStorage.getItem('lunch_mvp_token')).toBe('demo-visitor-token');
+        expect(document.body.textContent).toContain('Не вводите личную информацию');
+    });
+
+    it('reuses a valid demo session instead of creating another account', async () => {
+        window.__NETHAMMEREDA_DEMO__ = true;
+        const { fetchMock } = await mountApp({ authenticated: true });
+
+        expect(requestCount(fetchMock, '/auth/demo-session', 'POST')).toBe(0);
+    });
+
+    it('reprovisions a demo session after an expired token', async () => {
+        window.__NETHAMMEREDA_DEMO__ = true;
+        localStorage.setItem('lunch_mvp_token', 'expired-token');
+        const { fetchMock } = await mountApp();
+
+        expect(requestCount(fetchMock, '/auth/demo-session', 'POST')).toBe(1);
+        expect(localStorage.getItem('lunch_mvp_token')).toBe('demo-visitor-token');
+    });
     it('shows loading surfaces before catalog requests settle without false empty states', async () => {
         global.fetch = vi.fn(() => new Promise(() => {}));
 

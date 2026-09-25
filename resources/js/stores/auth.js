@@ -1,6 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { defineStore } from 'pinia';
 import {
+    createDemoSession,
     consumeTelegramSiteLoginToken,
     fetchMe,
     loginWithPassword,
@@ -206,6 +207,14 @@ export const useAuthStore = defineStore('auth', () => {
         return true;
     };
 
+    const authWithDemo = async () => {
+        const response = await createDemoSession();
+        setToken(response.data.token);
+        me.value = response.data.user;
+        setRequireFullName(false);
+        return response;
+    };
+
     const authWithPassword = async () => {
         const response = await loginWithPassword({
             email: email.value,
@@ -271,6 +280,7 @@ export const useAuthStore = defineStore('auth', () => {
         completeTelegramSiteLoginFromSession,
         loadMe,
         authWithTelegram,
+        authWithDemo,
         authWithPassword,
         updateProfile,
         requestLogout,
