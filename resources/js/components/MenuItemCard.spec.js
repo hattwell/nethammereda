@@ -94,7 +94,9 @@ describe('MenuItemCard UI', () => {
     it('marks the image column for responsive desktop sizing', () => {
         const wrapper = mountCard({ item: { ...baseItem, image_url: '/images/menu/dish-071.png' } });
 
-        expect(wrapper.find('[data-testid="menu-item-image-column"]').exists()).toBe(true);
+        expect(wrapper.find('[data-testid="menu-item-image-column"]').classes()).toContain('menu-card__image-column');
+        expect(wrapper.find('[data-testid="menu-item-image-area"]').classes()).toContain('menu-card__image-area');
+        expect(wrapper.find('[data-testid="menu-item-copy-column"]').classes()).toContain('menu-card__copy-column');
         expect(wrapper.find('[data-testid="menu-item-image-area"] img').attributes('src'))
             .toBe('/images/menu/dish-071.png');
     });

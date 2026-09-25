@@ -88,10 +88,10 @@ const plusButtonLabel = computed(() => (props.orderItem
         class="menu-card min-w-0 gap-0 overflow-hidden rounded-[1.15rem] border border-transparent bg-white py-0 text-slate-900 shadow-none ring-0 transition-[background-color] duration-150 max-[430px]:overflow-visible max-[430px]:rounded-none max-[430px]:border-transparent max-[430px]:bg-transparent max-[430px]:shadow-none max-[430px]:transition-none"
     >
         <CardContent class="flex h-full min-w-0 flex-col p-0">
-            <div data-testid="menu-item-image-column" class="relative mx-auto w-[176px] max-w-full pt-1.5 max-[430px]:w-full max-[430px]:pt-0">
+            <div data-testid="menu-item-image-column" class="menu-card__image-column relative mx-auto w-[176px] max-w-full pt-1.5 max-[430px]:w-full max-[430px]:pt-0">
                 <div
                     data-testid="menu-item-image-area"
-                    class="relative size-[176px] max-w-full overflow-hidden rounded-[1rem] bg-white max-[430px]:size-auto max-[430px]:aspect-square max-[430px]:h-auto max-[430px]:w-full max-[430px]:rounded-2xl"
+                    class="menu-card__image-area relative size-[176px] max-w-full overflow-hidden rounded-[1rem] bg-white max-[430px]:size-auto max-[430px]:aspect-square max-[430px]:h-auto max-[430px]:w-full max-[430px]:rounded-2xl"
                 >
                     <img
                         v-if="showImage"
@@ -134,7 +134,7 @@ const plusButtonLabel = computed(() => (props.orderItem
                 </button>
             </div>
 
-            <div data-testid="menu-item-copy-column" class="mx-auto flex w-[176px] max-w-full flex-1 flex-col pb-3.5 pt-2.5 max-[430px]:w-full max-[430px]:pb-3 max-[430px]:pt-0.5">
+            <div data-testid="menu-item-copy-column" class="menu-card__copy-column mx-auto flex w-[176px] max-w-full flex-1 flex-col pb-3.5 pt-2.5 max-[430px]:w-full max-[430px]:pb-3 max-[430px]:pt-0.5">
                 <h3
                     :title="displayTitle"
                     :aria-label="`Название блюда: ${displayTitle}`"
