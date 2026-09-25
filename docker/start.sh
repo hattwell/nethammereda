@@ -1,7 +1,7 @@
 #!/bin/sh
 set -eu
 
-PORT="${PORT:-10000}"
+export PORT="${PORT:-10000}"
 if [ "${APP_ENV:-}" != production ] || [ "${APP_DEBUG:-}" != false ] || \
    [ "${HOSTED_DEMO:-}" != true ] || [ "${DB_CONNECTION:-}" != sqlite ] || \
    [ "${DB_DATABASE:-}" != /var/www/html/storage/demo.sqlite ] || \

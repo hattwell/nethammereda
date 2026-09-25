@@ -21,6 +21,13 @@ class DemoContainerStartupTest extends TestCase
         $this->assertStringContainsString('Refusing hosted demo startup', $process->getErrorOutput());
     }
 
+    public function test_start_script_exports_default_port_for_nginx_template(): void
+    {
+        $script = file_get_contents(base_path('docker/start.sh'));
+
+        $this->assertStringContainsString('export PORT=', $script);
+    }
+
     public function test_start_script_refuses_wrong_database_even_with_demo_enabled(): void
     {
         $process = new Process(['/bin/sh', base_path('docker/start.sh')], base_path(), [
