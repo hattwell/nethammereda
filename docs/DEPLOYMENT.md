@@ -1,6 +1,6 @@
 # Deployment: isolated portfolio demo
 
-The former `nethammereda.ru` domain and VPS are **not available**. Do not use old deployment commands or upload production data. This document describes only the new, disposable Render Free demo; there is no live URL until the service is verified.
+The former `nethammereda.ru` domain and VPS are **not available**. Do not use old deployment commands or upload production data. This document describes only the new, disposable Render Free demo: <https://nethammereda-demo.onrender.com/>. Its catalog, isolated orders, read-only viewer, and cold restart were verified before the URL was published.
 
 ## Prerequisites
 
