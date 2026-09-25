@@ -29,7 +29,15 @@ class DemoHostedSeederTest extends TestCase
         $viewer = User::query()->where('role', UserRole::DemoViewer)->firstOrFail();
         $this->assertNotEquals('password', $viewer->password);
         $this->assertNull(User::query()->where('role', UserRole::Admin)->first());
-        $this->assertGreaterThan(0, MenuItem::query()->count());
+        $this->assertSame(16, MenuItem::query()->count());
+        foreach (\App\Models\MenuCategory::query()->get() as $category) {
+            $this->assertSame(4, $category->items()->count());
+        }
+        foreach (MenuItem::query()->get() as $item) {
+            $this->assertStringStartsWith('/images/menu/dish-', $item->image_url);
+            $this->assertFileExists(public_path(ltrim($item->image_url, '/')));
+            $this->assertSame('Вымышленное блюдо для демонстрации.', $item->description);
+        }
         $this->assertSame(1, OrderCycle::query()->count());
     }
 }
