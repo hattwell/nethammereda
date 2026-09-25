@@ -7,6 +7,8 @@ return [
 
     'demo_reset_allowed' => filter_var(env('DEMO_RESET_ALLOWED', false), FILTER_VALIDATE_BOOLEAN),
 
+    'hosted_demo' => filter_var(env('HOSTED_DEMO', false), FILTER_VALIDATE_BOOLEAN),
+
     // Set only during the guarded demo:reset command execution.
     'demo_reset_execution_authorized' => false,
 ];
