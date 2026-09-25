@@ -1,6 +1,6 @@
 # Public interactive portfolio demo — design
 
-Date: 2026-09-25. Status: approved in conversation, pending review of this written specification.
+Date: 2026-09-25. Status: approved in conversation (user authorized implementation).
 
 ## Outcome and constraints
 
@@ -20,7 +20,7 @@ Keep the existing catalog/order API and Vue app. In demo mode, add an explicitly
 
 ## Admin viewing
 
-Do not seed the publicly documented `admin@lunch.local`/`password` administrator into the hosted demo. Provide a distinct demo-viewer identity that can open selected Filament dashboard/list/detail pages for *seeded fictional records only*. Enforce read-only authorization server-side for every resource, page, widget, and custom action; hide create/edit/delete/import/export controls, and deny direct URLs and Livewire action requests as well. The viewer cannot change roles, invoke deliveries, download visitor data, or generate credentials. The underlying full admin identity is not publicly accessible. If complete read-only and data isolation cannot be demonstrated, do not release the admin URL; resolve the gap or ask the user to approve a clearly labeled static preview instead.
+Do not seed the publicly documented `admin@lunch.local`/`password` administrator into the hosted demo. Provide a distinct demo-viewer identity opened through a demo-only server-side entry route that creates a viewer session without publishing a shared password. The viewer can open selected Filament dashboard/list/detail pages for *seeded fictional records only*. Enforce read-only authorization server-side for every resource, page, widget, and custom action; hide create/edit/delete/import/export controls, and deny direct URLs and Livewire action requests as well. The viewer cannot change roles, invoke deliveries, download visitor data, or generate credentials. The underlying full admin identity is not publicly accessible. If complete read-only and data isolation cannot be demonstrated, do not release the admin URL; resolve the gap or ask the user to approve a clearly labeled static preview instead.
 
 ## Verification, publication, rollback
 
